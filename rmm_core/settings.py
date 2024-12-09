@@ -10,12 +10,8 @@ SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here')
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-DOMAIN = config("DOMAIN")
-
-# Configure allowed hosts and CSRF settings
-ALLOWED_HOSTS = [DOMAIN, '127.0.0.1', 'localhost']
-
-CSRF_TRUSTED_ORIGINS = [DOMAIN, 'http://127.0.0.1', 'http://localhost']
+# Configure allowed hosts
+ALLOWED_HOSTS = ["*"]
 
 # Define application categories
 LOCAL_APPS = [
@@ -25,6 +21,7 @@ LOCAL_APPS = [
 # Third-party applications
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'corsheaders',
 ]
 
 # Combine all apps
@@ -43,12 +40,15 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # URL configuration
 ROOT_URLCONF = 'rmm_core.urls'

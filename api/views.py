@@ -5,9 +5,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 from .models import Machine, MachineLog
 from .serializers import MachineSerializer, MachineLogSerializer
 
+@csrf_exempt
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def machine_list(request):
@@ -32,6 +34,7 @@ def machine_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def machine_detail(request, machine_id):
@@ -60,6 +63,7 @@ def machine_detail(request, machine_id):
         machine.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_machine_status(request, machine_id):
@@ -87,6 +91,7 @@ def update_machine_status(request, machine_id):
     serializer = MachineSerializer(machine)
     return Response(serializer.data)
 
+@csrf_exempt
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def machine_logs(request, machine_id):
