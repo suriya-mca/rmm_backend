@@ -4,7 +4,6 @@ This project is a simplified Remote Monitoring and Management (RMM) system, desi
 
 **Web-Based Dashboard**: A Django and Django REST Framework (DRF)-based platform for administrators.
 
----
 
 ## Features
 
@@ -89,7 +88,6 @@ Admin: http://127.0.0.1:8000/admin
      - `GET`: Lists logs of a specific machine.
      - `POST`: Creates a new log entry for the machine.
 
----
 
 ## Notes
 

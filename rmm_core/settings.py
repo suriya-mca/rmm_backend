@@ -1,26 +1,33 @@
 from pathlib import Path
 from decouple import config
 
+
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables
 SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here')
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 DOMAIN = config("DOMAIN")
 
+# Configure allowed hosts and CSRF settings
 ALLOWED_HOSTS = [DOMAIN, '127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = [DOMAIN, 'http://127.0.0.1', 'http://localhost']
 
+# Define application categories
 LOCAL_APPS = [
     'api',
 ]
 
+# Third-party applications
 THIRD_PARTY_APPS = [
     'rest_framework',
 ]
 
+# Combine all apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -32,6 +39,7 @@ INSTALLED_APPS = [
     *LOCAL_APPS,
 ]
 
+# Middleware configuration
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -42,8 +50,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URL configuration
 ROOT_URLCONF = 'rmm_core.urls'
 
+# Template configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -60,8 +70,10 @@ TEMPLATES = [
     },
 ]
 
+# WSGI and ASGI configuration
 WSGI_APPLICATION = 'rmm_core.wsgi.application'
 
+# Database configuration using SQLite
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -69,6 +81,7 @@ DATABASES = {
     }
 }
 
+# Password validation settings
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -84,6 +97,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Custom User Model Config
 AUTH_USER_MODEL = 'api.User'
 
 REST_FRAMEWORK = {
@@ -95,6 +109,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
