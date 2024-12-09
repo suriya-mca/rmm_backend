@@ -2,7 +2,7 @@
 
 from rest_framework import authentication
 from rest_framework import exceptions
-from accounts.models import User
+from api.models import User
 
 class APIKeyAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):

@@ -1,7 +1,7 @@
 # api/serializers.py
 
 from rest_framework import serializers
-from machines.models import Machine, Command, MachineLog
+from api.models import Machine, Command, MachineLog
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
