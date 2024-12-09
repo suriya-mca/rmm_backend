@@ -34,8 +34,7 @@ cd rmm_backend
 
 ```bash
 SECRET_KEY=secret_key
-DEBUG=False
-DOMAIN=http://your-domain.com
+DEBUG=True
 ```
 
 ### On Mac/Linux

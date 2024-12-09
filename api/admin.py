@@ -22,7 +22,7 @@ class MachineAdmin(admin.ModelAdmin):
     """
     Admin configuration for Machine model with status tracking.
     """
-    list_display = ('name', 'status', 'ip_address', 'last_seen')
+    list_display = ('id', 'name', 'status', 'ip_address', 'last_seen')
     list_filter = ('status',)
     search_fields = ('name', 'ip_address')
     readonly_fields = ('last_seen', 'created_at')
