@@ -100,3 +100,21 @@ class MachineLog(models.Model):
     
     def __str__(self):
         return f"{self.level}: {self.message[:50]}"
+
+
+class APILog(models.Model):
+    """
+    Model to store API request logs
+    """
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+    endpoint = models.CharField(max_length=255)
+    method = models.CharField(max_length=10)
+    request_data = models.JSONField(null=True)
+    response_data = models.JSONField(null=True)
+    
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.method} {self.endpoint} at {self.timestamp}"
