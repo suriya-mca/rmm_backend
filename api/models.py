@@ -1,10 +1,16 @@
+# api/models.py
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.conf import settings
 import uuid
 
 class UserManager(BaseUserManager):
+    """
+    Custom user manager that handles user and superuser creation with email as the unique identifier.
+    """
     def create_user(self, email, password=None, **extra_fields):
+        """Creates and saves a new user with the given email and password."""
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
@@ -14,6 +20,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """Creates and saves a new superuser with the given email and password."""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -25,6 +32,10 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractUser):
+    """
+    Custom user model using email instead of username.
+    Includes an API key for authentication.
+    """
     username = None
     email = models.EmailField(unique=True)
     api_key = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -37,8 +48,10 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-
 class Machine(models.Model):
+    """
+    Represents a machine in the system with its current status and network information.
+    """
     STATUS_CHOICES = [
         ('online', 'Online'),
         ('offline', 'Offline'),
@@ -56,6 +69,9 @@ class Machine(models.Model):
         return f"{self.name} ({self.status})"
 
 class Command(models.Model):
+    """
+    Stores commands sent to machines with their execution status and metadata.
+    """
     COMMAND_TYPES = [
         ('update', 'Update'),
         ('restart', 'Restart'),
@@ -83,6 +99,10 @@ class Command(models.Model):
         return f"{self.command_type} on {self.machine.name}"
 
 class MachineLog(models.Model):
+    """
+    Stores log entries from machines with different severity levels.
+    Ordered by creation time with most recent first.
+    """
     LOG_LEVELS = [
         ('info', 'Info'),
         ('warning', 'Warning'),
@@ -101,10 +121,10 @@ class MachineLog(models.Model):
     def __str__(self):
         return f"{self.level}: {self.message[:50]}"
 
-
 class APILog(models.Model):
     """
-    Model to store API request logs
+    Tracks all API requests with request/response data and user information.
+    Ordered by timestamp with most recent first.
     """
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
