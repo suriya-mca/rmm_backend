@@ -17,6 +17,11 @@ This project is a simplified Remote Monitoring and Management (RMM) system, desi
 - **Authentication**:
   - API-key-based authentication for secure communication.
 
+
+##  ⚡Quick Installation with Script
+
+You can set up the project quickly by running the installation script. Make sure you have the necessary permissions.
+
 ### Prerequisites
 
 Ensure the following is installed on your system:
@@ -48,6 +53,37 @@ chmod +x install.sh
 
 ```bash
 ./install.bat
+```
+
+## 🐋 Docker Installation
+
+If you prefer to use Docker for a containerized setup, follow these steps:
+
+### Prerequisites
+
+Ensure the following is installed on your system:
+
+- **Docker**
+
+### Clone the project & Go to the project directory
+
+```bash
+git clone https://github.com/suriya-mca/rmm_backend.git
+cd rmm_backend
+```
+
+### Create .env file
+
+```bash
+SECRET_KEY=secret_key
+DEBUG=True
+```
+
+### Build and run the docker image
+
+```bash
+docker build -t rmm_backend:latest .
+docker run --env-file .env -p 8000:8000 --name rmm-container rmm_backend:latest
 ```
 
 ## Endpoints
