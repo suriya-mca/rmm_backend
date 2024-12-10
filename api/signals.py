@@ -1,28 +1,34 @@
 # api/signals.py
 
 from django.db.models.signals import post_save
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import APILog
 
-@receiver(post_save, sender=Response)
-def log_api_response(sender, instance, created, **kwargs):
+@receiver(user_logged_in)
+def log_user_login(sender, request, user, **kwargs):
     """
-    Log DRF Response objects when they are created
+    Log user login events
     """
-    try:
-        # Get the request from the response context
-        request = instance.renderer_context.get('request')
-        
-        if request:
-            # Create API log entry
-            APILog.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                endpoint=request.path,
-                method=request.method,
-                request_data=request.data if hasattr(request, 'data') else None,
-                response_data=instance.data if hasattr(instance, 'data') else None
-            )
-    except Exception as e:
-        print(f"Error logging API response: {str(e)}")
+    APILog.objects.create(
+        user=user,
+        endpoint='/api/login/',  # Adjust based on your login endpoint
+        method='POST',
+        request_data={'username': user.email},
+        response_data={'status': 'success', 'message': 'User logged in'}
+    )
+
+@receiver(user_logged_out)
+def log_user_logout(sender, request, user, **kwargs):
+    """
+    Log user logout events
+    """
+    APILog.objects.create(
+        user=user,
+        endpoint='/api/logout/',  # Adjust based on your logout endpoint
+        method='POST',
+        request_data={'username': user.email},
+        response_data={'status': 'success', 'message': 'User logged out'}
+    )
